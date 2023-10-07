@@ -14,9 +14,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   /*late*/ double?
       _numberForm; //late serve para corrigir o erro de inicialização, ou pode-se criar um construtor? - Deu erro colocar o late. A variável não é inicializada, colocando o ponto de interrogação indica que esta variável é passível de ser nula
-      String? valorInicial;
-      String? valorConvertido;
-      
+  String? valorInicial;
+  String? valorConvertido;
+
   final List<String> medidas = [
     'Metros',
     'Quilômetros',
@@ -62,12 +62,13 @@ class _MyAppState extends State<MyApp> {
             children: [
               Text(
                 'Valor',
-                style:labelStyle,
+                style: labelStyle,
               ),
-              //const Spacer(),
+              const Spacer(),
               TextField(
                 style: inputStyle,
-                decoration: const InputDecoration(hintText: 'Digite o valor a ser convertido'),
+                decoration: const InputDecoration(
+                    hintText: 'Digite o valor a ser convertido'),
                 //propriedade do TextFild - evento (mudança)
                 onChanged: (text) {
                   var valorInput = double.tryParse(text);
@@ -79,29 +80,54 @@ class _MyAppState extends State<MyApp> {
                   }
                 },
               ),
-              //const Spacer(),
+              const Spacer(),
               Text(
                 'De',
-                style:labelStyle,
+                style: labelStyle,
               ),
               DropdownButton(
                 value: valorInicial,
                 items: medidas.map(dropDowCreate).toList(),
                 isExpanded: true,
-                onChanged: (_ ) {},
+                onChanged: (medidas) {
+                  setState(() {
+                    valorInicial = medidas;
+                  });
+                },
               ),
-              //const Spacer(),
+              //Text((_numberForm == null) ? '' : _numberForm.toString()),              
+              const Spacer(),
               Text(
                 'Para',
-                style:labelStyle,
+                style: labelStyle,
               ),
               DropdownButton(
                 value: valorConvertido,
-                items: _medidas.map(dropDowCreate).toList(),
+                items: medidas.map(dropDowCreate).toList(),
                 isExpanded: true,
-                onChanged: (_) {},
+                onChanged: (medidas) {
+                  setState(() {
+                    valorConvertido = medidas;
+                  });                  
+                },
+              ),
+              const Spacer(
+                flex : 2,
+              ),
+              ElevatedButton(
+                child: Text('Converter',
+                style: inputStyle,
+                ),
+                onPressed: () => true,
+              ),
+              const Spacer(
+                flex : 2,
               ),              
-              Text((_numberForm == null) ? '' : _numberForm.toString()),
+              Text((_numberForm == null) ? '' : _numberForm.toString(), style: labelStyle,
+              ),
+              const Spacer(
+                flex : 8,
+              ),               
             ],
           ),
         ),
