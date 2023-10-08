@@ -16,6 +16,7 @@ class _MyAppState extends State<MyApp> {
       _numberForm; //late serve para corrigir o erro de inicialização, ou pode-se criar um construtor? - Deu erro colocar o late. A variável não é inicializada, colocando o ponto de interrogação indica que esta variável é passível de ser nula
   String? valorInicial;
   String? valorConvertido;
+  String? mesgConversao;
 
   final List<String> medidas = [
     'Metros',
@@ -25,6 +26,43 @@ class _MyAppState extends State<MyApp> {
     'Minutos',
     'Segundos'
   ];
+  final Map<String, int> medidasMap = {
+    'Metros': 0,
+    'Quilômetros': 1,
+    'Gramas': 2,
+    'Quilogramas': 3,
+    'Minutos': 4,
+    'Segundos': 5,
+  };
+
+  final dynamic formulasConversao = {
+    '0': [1, 0.001, 0, 0, 0, 0],
+    '1': [1000, 1, 0, 0, 0, 0],
+    '2': [0, 0, 1, 0.001, 0, 0],
+    '3': [0, 0, 1000, 1, 0, 0],
+    '4': [0, 0, 0, 0, 1, 60],
+    '5': [0, 0, 0, 0, 0.01666667, 1],
+  };
+
+  void conversao(double medidas, String De, String Para) {
+    int? nDe = medidasMap[De];
+    int? nPara = medidasMap[Para];
+    var fatorConversao = formulasConversao[nDe.toString()][nPara];
+    double resultado = medidas * fatorConversao;
+    String msg = "";
+    if (resultado == 0) {
+      msg = 'O valor não pode ser convertivo';
+    } else {
+      var medidasForm = _numberForm.toString();
+      var valorI = valorInicial;
+      var resultadoStr = resultado.toString();
+      var medidaConvertida = valorConvertido;
+      msg = '$medidasForm $valorI é $resultadoStr $medidaConvertida';
+    }
+    setState(() {
+      mesgConversao = msg;
+    });
+  }
 
   @override
   void initState() {
@@ -54,14 +92,14 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Conversor de Unidades'),
-          centerTitle:true,
+          centerTitle: true,
         ),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           //TextFild - input usuário
           child: Column(
             children: [
-              const Spacer(),              
+              const Spacer(),
               Text(
                 'Valor',
                 style: labelStyle,
@@ -70,8 +108,8 @@ class _MyAppState extends State<MyApp> {
               TextField(
                 style: inputStyle,
                 decoration: const InputDecoration(
-                    hintText: 'Digite o valor a ser convertido', 
-                    ),
+                  hintText: 'Digite o valor a ser convertido',
+                ),
                 //propriedade do TextFild - evento (mudança)
                 onChanged: (text) {
                   var valorInput = double.tryParse(text);
@@ -98,7 +136,7 @@ class _MyAppState extends State<MyApp> {
                   });
                 },
               ),
-              //Text((_numberForm == null) ? '' : _numberForm.toString()),              
+              //Text((_numberForm == null) ? '' : _numberForm.toString()),
               const Spacer(),
               Text(
                 'Para',
@@ -111,26 +149,35 @@ class _MyAppState extends State<MyApp> {
                 onChanged: (medidas) {
                   setState(() {
                     valorConvertido = medidas;
-                  });                  
+                  });
                 },
               ),
               const Spacer(
-                flex : 2,
+                flex: 2,
               ),
               ElevatedButton(
-                child: Text('Converter',
-                style: inputStyle,
+                child: Text(
+                  'Converter',
+                  style: inputStyle,
                 ),
-                onPressed: () => true,
+                onPressed: () {
+                  bool? inicial = valorInicial?.isNotEmpty;
+                  bool? convertido = valorConvertido?.isNotEmpty;
+                  if (inicial! && convertido!) {
+                    conversao(_numberForm!, valorInicial!, valorConvertido!);
+                  }
+                },
               ),
               const Spacer(
-                flex : 2,
-              ),              
-              Text((_numberForm == null) ? '' : _numberForm.toString(), style: labelStyle,
+                flex: 2,
+              ),
+              Text(
+                (mesgConversao == null) ? '' : mesgConversao.toString(),
+                style: labelStyle,
               ),
               const Spacer(
-                flex : 8,
-              ),               
+                flex: 8,
+              ),
             ],
           ),
         ),
