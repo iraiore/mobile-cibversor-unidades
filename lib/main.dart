@@ -53,13 +53,15 @@ class _MyAppState extends State<MyApp> {
       title: 'Conversor de Unidades',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Converter unidades'),
+          title: Text('Conversor de Unidades'),
+          centerTitle:true,
         ),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           //TextFild - input usuário
           child: Column(
             children: [
+              const Spacer(),              
               Text(
                 'Valor',
                 style: labelStyle,
@@ -68,7 +70,8 @@ class _MyAppState extends State<MyApp> {
               TextField(
                 style: inputStyle,
                 decoration: const InputDecoration(
-                    hintText: 'Digite o valor a ser convertido'),
+                    hintText: 'Digite o valor a ser convertido', 
+                    ),
                 //propriedade do TextFild - evento (mudança)
                 onChanged: (text) {
                   var valorInput = double.tryParse(text);
