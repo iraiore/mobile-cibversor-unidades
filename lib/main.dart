@@ -19,29 +19,44 @@ class _MyAppState extends State<MyApp> {
   String? mesgConversao;
 
   final List<String> medidas = [
+    'Milímetros',
+    'Centímetros',
     'Metros',
     'Quilômetros',
+    'Miligramas',
+    'Centigramas',
     'Gramas',
     'Quilogramas',
+    'Horas',
     'Minutos',
-    'Segundos'
+    'Segundos',
   ];
   final Map<String, int> medidasMap = {
-    'Metros': 0,
-    'Quilômetros': 1,
-    'Gramas': 2,
-    'Quilogramas': 3,
-    'Minutos': 4,
-    'Segundos': 5,
+    'Milímetros': 0,
+    'Centímetros': 1,
+    'Metros': 2,
+    'Quilômetros': 3,
+    'Miligramas': 4,
+    'Centigramas': 5,
+    'Gramas': 6,
+    'Quilogramas': 7,
+    'Horas': 8,
+    'Minutos': 9,
+    'Segundos': 10,
   };
 
   final dynamic formulasConversao = {
-    '0': [1, 0.001, 0, 0, 0, 0],
-    '1': [1000, 1, 0, 0, 0, 0],
-    '2': [0, 0, 1, 0.001, 0, 0],
-    '3': [0, 0, 1000, 1, 0, 0],
-    '4': [0, 0, 0, 0, 1, 60],
-    '5': [0, 0, 0, 0, 0.01666667, 1],
+    '0': [1, 0.1, 0.001, 0.000001, 0, 0, 0, 0, 0, 0, 0],
+    '1': [10, 1, 0.01, 0.00001, 0, 0, 0, 0, 0, 0, 0],
+    '2': [1000, 100, 1, 0.001, 0, 0, 0, 0, 0, 0, 0],
+    '3': [1000000, 100000, 1000, 1, 0, 0, 0, 0, 0, 0, 0],
+    '4': [0, 0, 0, 0, 1, 0.1, 0.001, 0.000001, 0, 0, 0],
+    '5': [0, 0, 0, 0, 10, 1, 0.01, 0.00001, 0, 0],
+    '6': [0, 0, 0, 0, 1000, 100, 1, 0.001, 0, 0, 0],
+    '7': [0, 0, 0, 0, 1000000, 100000, 1000, 1, 0, 0, 0],
+    '8': [0, 0, 0, 0, 0, 0, 0, 0, 1, 60, 3600],
+    '9': [0, 0, 0, 0, 0, 0, 0, 0, 0.001666667, 1, 60],
+    '10': [0, 0, 0, 0, 0, 0, 0, 0, 0.0002777778, 0.0166667, 1]
   };
 
   void conversao(double medidas, String De, String Para) {
@@ -51,7 +66,7 @@ class _MyAppState extends State<MyApp> {
     double resultado = medidas * fatorConversao;
     String msg = "";
     if (resultado == 0) {
-      msg = 'O valor não pode ser convertivo';
+      msg = 'O valor não pode ser convertido';
     } else {
       var medidasForm = _numberForm.toString();
       var valorI = valorInicial;
